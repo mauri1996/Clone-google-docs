@@ -33,7 +33,7 @@ export default function TextEditor() {
   }, [])
 
   useEffect(() => {
-    
+
     if (socket == null || quill == null) return
 
     socket.once("load-document", document => {
@@ -41,9 +41,9 @@ export default function TextEditor() {
       quill.enable()
     })
 
-    socket.emit("get-document", documentId,nameuser)
+    socket.emit("get-document", documentId, nameuser)
 
-  }, [socket, quill, documentId,nameuser])
+  }, [socket, quill, documentId, nameuser])
 
   useEffect(() => {
     if (socket == null || quill == null) return
@@ -64,6 +64,16 @@ export default function TextEditor() {
       quill.updateContents(delta)
     }
     socket.on("receive-changes", handler)
+
+    socket.on("clients-connect", (users)=>{
+      console.log(socket.id)
+      console.log("Clientes activos", users)
+    })
+
+    socket.on("clients-disconnect", (users)=>{
+      console.log(socket.id)
+      console.log("Clientes activos", users)
+    })
 
     return () => {
       socket.off("receive-changes", handler)
@@ -99,10 +109,10 @@ export default function TextEditor() {
     setQuill(q)
   }, [])
   return (
-          <Fragment>
-            <div className='container row'>
-                <h3><strong>Usuario:</strong> {nameuser}</h3>
-            </div>
-            <div className="container" ref={wrapperRef}> </div>
-          </Fragment>);
+  <Fragment>
+    <div className='container row' >
+      <h3 > < strong > Usuario: </strong> {nameuser}</h3 >
+    </div>  
+    <div className="container" ref={wrapperRef} ></div>
+  </Fragment> );
 }
