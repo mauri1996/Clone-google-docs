@@ -3,6 +3,7 @@ import Quill from "quill"
 import "quill/dist/quill.snow.css"
 import { io } from "socket.io-client"
 import { useParams } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
 const SAVE_INTERVAL_MS = 2000
 const TOOLBAR_OPTIONS = [
@@ -22,6 +23,7 @@ export default function TextEditor() {
   const { name: nameuser } = useParams()
   const [socket, setSocket] = useState()
   const [quill, setQuill] = useState()
+  const [mensaje, setMensaje] = useState()
 
   useEffect(() => {
     const s = io("http://localhost:3001")
@@ -30,7 +32,10 @@ export default function TextEditor() {
     return () => {
       s.disconnect()
     }
+
+
   }, [])
+
 
   useEffect(() => {
 
@@ -40,7 +45,6 @@ export default function TextEditor() {
       quill.setContents(document)
       quill.enable()
     })
-
     socket.emit("get-document", documentId, nameuser)
 
   }, [socket, quill, documentId, nameuser])
@@ -68,11 +72,21 @@ export default function TextEditor() {
     socket.on("clients-connect", (users)=>{
       console.log(socket.id)
       console.log("Clientes activos", users)
+      setMensaje("Tenemos un nuevo invitado, espero que traiga pizza!! 🍕🍕")
+      setTimeout (()=>{
+        
+        setMensaje("")
+      }, 5000)
     })
 
     socket.on("clients-disconnect", (users)=>{
       console.log(socket.id)
       console.log("Clientes activos", users)
+      setMensaje("Se fue, revisen si ha avanzado algo!! 🙊🙊")
+      setTimeout (()=>{
+        
+        setMensaje("")
+      }, 5000)
     })
 
     return () => {
@@ -109,10 +123,24 @@ export default function TextEditor() {
     setQuill(q)
   }, [])
   return (
-  <Fragment>
-    <div className='container row' >
-      <h3 > < strong > Usuario: </strong> {nameuser}</h3 >
-    </div>  
+  <Fragment >
+    
+    <nav className="navbar navbar-expand-lg color-container mb-3 mt-3 container text-white rounded">
+      <div class="container-fluid">
+        <h3 > < strong > Yo soy: </strong> {nameuser}</h3 >
+ 
+        <div className="d-flex" id="mensaje" >
+          <small> {mensaje} </small>
+        </div>
+        <Link to="/" >
+          <button className="btn btn-light" >
+           Regresar 
+          </button>
+         </Link>
+        </div>
+    </nav>
     <div className="container" ref={wrapperRef} ></div>
+    
   </Fragment> );
 }
+

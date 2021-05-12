@@ -13,10 +13,10 @@ export default function Login() {
     const [name, setName] = useState('')
 
     return (
-        <div style={mystyle} className='d-flex align-items-center justify-content-center flex-column'>
-            <div className="d-flex align-items-center mb-3">
-                <form >
-                    <h3>Ingresa un nombre y/o codigo</h3>
+        <div style={mystyle} className='d-flex align-items-center justify-content-center flex-column ' >
+            <div className="d-flex align-items-center mb-3 " >
+                <form className="color-container p-5 text-white" >
+                    <h3> Gúgol Docs </h3>
                     <br />
                     <div className="form-group">
                         <label>Nombre:</label>
@@ -30,11 +30,15 @@ export default function Login() {
                     <br />
                     
 
+                    <div className="d-flex align-items-center justify-content-center">
                     <Link to={id && name ? `/documents/${id}/${name}` : '#'} >
-                        <button className="btn btn-primary" disabled={id && name ? false : true}>
+                        <button className="btn btn-light" disabled={id && name ? false : true}>
                             Conectarse
                         </button>
+
+                        
                     </Link>
+                    </div>
 
                 </form>
             </div>

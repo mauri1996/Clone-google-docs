@@ -47,6 +47,8 @@ io.on("connection", socket => {
             await Document.findByIdAndUpdate(documentId, { data })
         })
         socket.broadcast.to(documentId).emit("clients-connect", io.engine.clientsCount)
+
+
     })
 })
 
